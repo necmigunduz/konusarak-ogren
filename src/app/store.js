@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { namesApi } from "../api/api";
+import { charApi } from "../api/charApi";
 
 export const store = configureStore({
     reducer: {

@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { useNamesQuery } from "./api/api";
+import { useNamesQuery, useCharactersQuery } from "./api/api";
 import ReactPaginate from 'react-paginate';
 
 function App() {
-  const { data, error, isLoading, isSuccess } = useNamesQuery();
+  const { data: names, error, isLoading, isSuccess } = useNamesQuery();
+  const { data: characters } = useCharactersQuery();
   const [info , setInfo] = useState();
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(0);
   const [result, setResult] = useState();
+  const [chars, setChars] = useState();
   
   const getData = async () => {
-    let res = await data.results;
+    let res = await names.results;
     const slice = res.slice(offset, offset + perPage)
     const handleClick = (id) => {
+      const handleChars = (id) => {
+        let IDs = [];
+        for(let i=0;i<names.results[id].characters.length;i++){
+          IDs.push(parseInt(names.results[id].characters[i].split('/')[5]))
+        }
+        
+        console.log(IDs)
+        // console.log(characters)
+      };
       const selResult = 
       <>
         <p><strong>Name:</strong> {res[id-1].name}</p>
         <p><strong>Air Date:</strong> {res[id-1].air_date}</p>
-        <p><strong>Link:</strong> <a href="{res[id-1].url}">Episode {res[id-1].id}</a></p>
-        <button>See Characters in Episode {res[id-1].id}</button>
+        <p><strong>Link:</strong><a href="{res[id-1].url}">Episode {res[id-1].id}</a></p><br/>
+        <div 
+          style={{color:'gray', cursor:'pointer'}} 
+          onClick={()=>handleChars(res[id-1].id)}
+        >
+          See Characters in Episode {res[id-1].id}
+        </div>
+        <div>
+          {chars}
+        </div>
       </>
       setResult(selResult)
       console.log(result)
