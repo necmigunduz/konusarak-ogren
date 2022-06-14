@@ -1,9 +1,49 @@
 .App {
-  text-align: left;
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 25%;
+  border: 1px solid black;
+  margin: 1% 33%;
+}
+
+.List {
+  margin: 20px 20%;
+  text-align: center;
 }
 
 .Show {
-  margin-top: 30px;
+  text-align: center;
+  line-height: 5px;
 }
 
+.success {
+  line-height: 10px;
+}
+.pagination {
+  margin: 10% -40%;
+  display: flex;
+  list-style: none;
+}
+.pagination > .active > a{
+  background-color: #47ccde ;
+  border-color: #47ccde ;
+  color: #fff;
+}
+.pagination > li > a{
+  border: 1px solid #47ccde ;
+  padding: 1px 10px;
+  outline: none;
+  cursor: pointer;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+  background-color: #47ccde ;
+  border-color: #2724d3;
+  outline: none;
+}
+.pagination > li > a, .pagination > li > span{
+  color: #47ccde
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+  border-radius: unset
+}
