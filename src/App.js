@@ -1,56 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { useNamesQuery } from "./api/api";
+import ReactPaginate from 'react-paginate';
 
 function App() {
+  const { data, error, isLoading, isSuccess } = useNamesQuery();
+  const [info , setInfo] = useState()
+  
+  const handleClick = (no) => {
+    let result = data.results[no].name;
+    setInfo(result)
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <div className="List">
+        <h1>Episode Names</h1>
+        {isLoading && <h2>...loading</h2>}
+        {error && <h2>Something went wrong!</h2>}
+        {isSuccess && (
+          <div>
+            {data.results.map((episode) => (
+              <div key={episode.id}>
+                <span>--:-:--:-:-</span>
+                <div key={episode.id} onClick={()=>handleClick(episode.id - 1)} >
+                  {episode.id} - <span style={{color:'blue'}}>{episode.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="Display">
+        <em>{info}</em>
+      </div> 
     </div>
   );
 }
