@@ -10,9 +10,9 @@ export const namesApi = createApi({
             query: () => '/episode'
         }),
         characters: builder.query({
-            query: () => '/character'
+            query: id => `/character/${id}`,            
         }),
-    })
+    })  
 });
 
 export const { useNamesQuery, useCharactersQuery } = namesApi;

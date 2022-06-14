@@ -3,16 +3,18 @@ import "./App.css";
 import { useNamesQuery, useCharactersQuery } from "./api/api";
 import ReactPaginate from 'react-paginate';
 
-function App() {
+function App({id}) {
   const { data: names, error, isLoading, isSuccess } = useNamesQuery();
-  const { data: characters } = useCharactersQuery();
+  let characters = [];
+  const { data: character } = useCharactersQuery(1);
+ 
   const [info , setInfo] = useState();
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(0);
   const [result, setResult] = useState();
   const [chars, setChars] = useState();
-  
+    
   const getData = async () => {
     let res = await names.results;
     const slice = res.slice(offset, offset + perPage)
@@ -22,9 +24,8 @@ function App() {
         for(let i=0;i<names.results[id].characters.length;i++){
           IDs.push(parseInt(names.results[id].characters[i].split('/')[5]))
         }
-        
         console.log(IDs)
-        // console.log(characters)
+        console.log(character.image)
       };
       const selResult = 
       <>
