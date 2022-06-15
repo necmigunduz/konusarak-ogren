@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { useNamesQuery, useCharactersQuery } from "./api/api";
+import { useNamesQuery } from "./api/api";
 import ReactPaginate from 'react-paginate';
-import { cleanup } from "@testing-library/react";
+import fetchChar from "./api/fetchChars";
+
 
 function App() {
   const { data: names, error, isLoading, isSuccess } = useNamesQuery();
@@ -11,34 +12,46 @@ function App() {
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(0);
   const [result, setResult] = useState();
-
+  const [characters, setCharacters] = useState([]);
+  
+  const getChar = async (id) => {
+    let char = await fetchChar(id)
+    return char;
+  }
+  const handleChars = async (id) => {
+    let IDs = [];
+    for(let i=0;i<names.results[id].characters.length;i++){
+      IDs.push(parseInt(names.results[id].characters[i].split('/')[5]))
+    }
+    console.log(IDs);
+    let chars = []
+    for(let i=0; i<IDs.length;i++){
+      let char = await getChar(IDs[i]);
+      chars.push(char)
+    }
+    setCharacters(chars)
+    console.log(characters)
+  };
+  const handleClick = (id) => {
+    let res = names.results
+    const selResult = 
+    <>
+      <h4>Episode {res[id-1].name}</h4>
+      <p><strong>Name:</strong> {res[id-1].name}</p>
+      <p><strong>Air Date:</strong> {res[id-1].air_date}</p>
+      <p><strong>URL: </strong>{res[id-1].url}</p><br/>
+      <div 
+        style={{color:'gray', cursor:'pointer'}} 
+        onClick={()=>handleChars(res[id].id)}
+      >
+        Click here to see characters in Episode {res[id-1].id}
+      </div>
+    </>
+    setResult(selResult)
+  }
   const getData = async () => {
     let res = await names.results;
     const slice = res.slice(offset, offset + perPage)
-    const handleClick = (id) => {
-      const handleChars = (id) => {
-        let IDs = [];
-        for(let i=0;i<names.results[id].characters.length;i++){
-          IDs.push(parseInt(names.results[id].characters[i].split('/')[5]))
-        }
-        console.log(IDs)
-      };
-      const selResult = 
-      <>
-        <h4>Episode {res[id-1].name}</h4>
-        <p><strong>Name:</strong> {res[id-1].name}</p>
-        <p><strong>Air Date:</strong> {res[id-1].air_date}</p>
-        <p><strong>URL: </strong>{res[id-1].url}</p><br/>
-        <div 
-          style={{color:'gray', cursor:'pointer'}} 
-          onClick={()=>handleChars(res[id-1].id)}
-        >
-          See Characters in Episode {res[id-1].id}
-        </div>
-      </>
-      setResult(selResult)
-      // console.log(result)
-    }
     const postData = slice.map(pd => 
     <div key={pd.id}>
       <p>{pd.name}</p>
@@ -55,7 +68,7 @@ function App() {
     const selectedPage = e.selected;
     setOffset(selectedPage)
   };
-
+  
   useEffect(() => {
     getData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);  
@@ -91,6 +104,7 @@ function App() {
       </div>
       <div className="Show">
         {result}
+        <ul style={{listStyle:'none', lineHeight:'12px'}}>{characters.map((char) => <li style={{fontSize: '10px'}}>{char.name}</li>)}</ul>
       </div>
     </div>
   );
