@@ -36,7 +36,7 @@ function App() {
     let res = names.results
     const selResult = 
     <>
-      <h4>Episode {res[id-1].name}</h4>
+      <h4>{res[id-1].name}</h4>
       <p><strong>Name:</strong> {res[id-1].name}</p>
       <p><strong>Air Date:</strong> {res[id-1].air_date}</p>
       <p><strong>URL: </strong>{res[id-1].url}</p><br/>
@@ -75,36 +75,36 @@ function App() {
   
   return (
     <div className="App">
-      <div>
-        <div className="List">
-          <div className="inList">
-            <h1>Episode Names</h1>
-            {isLoading && <h2>...loading</h2>}
-            {error && <h2>Something went wrong!</h2>}
-            {isSuccess && (
-              <div className="success">
-                {info}
-                <ReactPaginate
-                  previousLabel={"Previous"}
-                  nextLabel={"Next"}
-                  breakLabel={"..."}
-                  breakClassName={"break-me"}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination"}
-                  subContainerClassName={"pages pagination"}
-                  activeClassName={"active"}
-                />
-              </div>
-            )}
-          </div>
+    
+      <div className="List">
+        <div className="inList">
+          <h1>Episode List</h1>
+          {isLoading && <h2>...loading</h2>}
+          {error && <h2>Something went wrong!</h2>}
+          {isSuccess && (
+            <div className="success">
+              {info}
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+              />
+            </div>
+          )}
         </div>
       </div>
+      
       <div className="Show">
         {result}
-        <ul style={{listStyle:'none', lineHeight:'12px'}}>{characters.map((char) => <li style={{fontSize: '10px'}}>{char.name}</li>)}</ul>
+        <ul style={{listStyle:'none', lineHeight:'12px', marginLeft:'-20px'}}>{characters.map((char) => <li style={{fontSize: '10px'}}>{char.name}</li>)}</ul>
       </div>
     </div>
   );
