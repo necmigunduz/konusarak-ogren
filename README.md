@@ -2,7 +2,7 @@
 
 This is a simple React project to show some info about the episodes of the Rick and Morty cartoon.
 
-![screenshot](https://github.com/necmigunduz/simple_login_page/blob/master/screenshot.png)
+![screenshot](https://github.com/necmigunduz/konusarak-ogren/blob/master/Screenshot.png)
 
 ## Built With
 
@@ -14,12 +14,10 @@ This is a simple React project to show some info about the episodes of the Rick 
 
 ## Getting Started
 
-The project uses the postgresql database
-To test the endpoints locally you can use tunneling with ngrok or a similar tool
-
-- `git clone git@github.com:necmigunduz/simple_login_page.git`,
-- `cd simple_login_page`,
-- `npm install`.
+- `git clone git@github.com:necmigunduz/konusarak-ogren.git`,
+- `cd konusarak-ogren`,
+- `npm install`,
+- `npm start`.
 
 ## Author
 
