@@ -8,11 +8,8 @@ export const namesApi = createApi({
     endpoints: (builder) => ({
         names: builder.query({
             query: () => '/episode'
-        }),
-        characters: builder.query({
-            query: id => `/character/${id}`,            
-        }),
+        })
     })  
 });
 
-export const { useNamesQuery, useCharactersQuery } = namesApi;
+export const { useNamesQuery } = namesApi;

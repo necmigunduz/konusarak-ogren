@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { useNamesQuery, useCharactersQuery } from "./api/api";
 import ReactPaginate from 'react-paginate';
+import { cleanup } from "@testing-library/react";
 
-function App({id}) {
+function App() {
   const { data: names, error, isLoading, isSuccess } = useNamesQuery();
-  let characters = [];
-  const { data: character } = useCharactersQuery(1);
- 
   const [info , setInfo] = useState();
   const [offset, setOffset] = useState(0);
   const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(0);
   const [result, setResult] = useState();
-  const [chars, setChars] = useState();
-    
+
   const getData = async () => {
     let res = await names.results;
     const slice = res.slice(offset, offset + perPage)
@@ -25,44 +22,43 @@ function App({id}) {
           IDs.push(parseInt(names.results[id].characters[i].split('/')[5]))
         }
         console.log(IDs)
-        console.log(character.image)
       };
       const selResult = 
       <>
+        <h4>Episode {res[id-1].name}</h4>
         <p><strong>Name:</strong> {res[id-1].name}</p>
         <p><strong>Air Date:</strong> {res[id-1].air_date}</p>
-        <p><strong>Link:</strong><a href="{res[id-1].url}">Episode {res[id-1].id}</a></p><br/>
+        <p><strong>URL: </strong>{res[id-1].url}</p><br/>
         <div 
           style={{color:'gray', cursor:'pointer'}} 
           onClick={()=>handleChars(res[id-1].id)}
         >
           See Characters in Episode {res[id-1].id}
         </div>
-        <div>
-          {chars}
-        </div>
       </>
       setResult(selResult)
-      console.log(result)
+      // console.log(result)
     }
     const postData = slice.map(pd => 
     <div key={pd.id}>
       <p>{pd.name}</p>
-      <div style={{color:'blue', cursor:'pointer'}} onClick={() => handleClick(pd.id)}>See info</div>
+      <div 
+        style={{color:'blue', cursor:'pointer'}} 
+        onClick={() => handleClick(pd.id)}
+      >See info</div>
     </div>)
     setInfo(postData)
     setPageCount(Math.ceil(res.length/perPage))
   };
 
-  useEffect(() => {
-    getData(); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
-
   const handlePageClick = (e) => {
     const selectedPage = e.selected;
     setOffset(selectedPage)
   };
-  
+
+  useEffect(() => {
+    getData(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offset]);  
   
   return (
     <div className="App">
